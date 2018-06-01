@@ -1,6 +1,16 @@
 # hello-world
-emmmm ,this is my first test
-just....
-Welcome to Github and I love coding 
-anyway,my hair is real
-that's all
+1. emmmm ,this is my first test
+2. just....
+3. Welcome to Github and I love coding 
+4. anyway,my hair is real
+5. that's all
+
+```
+  public class
+  {
+    public static void main()
+    {
+      System.out.println("Welcome to Github !");
+    }
+  }
+```
