@@ -16,7 +16,26 @@
 3. 包含Main（）的类称为主类
 ## 9.3 定义类和创建对象
 1. 可以把两个类放在同一个文件中，但是文件中只能有一个类是公共类(public)
+	* 此外公共类(public)必须与文件同名
+
+2. 包含Main（）函数的类称为主类，结构如下：
+```
+	public class mainClass
+	{
+		public static void main(String[] args)
+		{
+			//Main Method Area
+		}
+		
+		/* Main Class Content*/
+		
+		//Data Area
+		
+		// Constructor Method
+		
+		// Methods		
+	}
+```
 
 </> abernathy
-
 MK-42
