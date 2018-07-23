@@ -1,23 +1,25 @@
 # 第九章 对象和类
 
-## 9.1 引言
+## 9.1 面向对象优势
 面向对象编程可以有效的帮助开发大规模的软件以及图形用户界面(GUI)
 
-## 9.2 对象定义类
+## 9.2 对象的介绍
 1. 类为对象定义属性和行为
-	1. 一个对象的属性：是由具有当前值的数据域来表示的
-	2. 一个对象的行为：是由方法定义的，调用一个方法就是要对对象完成一个动作
-	3. Java类用【变量】定义【数据域】
-	4. Java类用【方法】定义【动作】	
+	1. 对象的两要素
+		1. 属性：是由具有当前值的数据域来表示的
+		2. 行为：是由方法定义的，调用一个方法就是要对对象完成一个动作
+	2. Java类
+		1. 用 变量 定义 数据域
+		2. 用 方法 定义 动作	
+		
 2. UML类图
 	1. 类：ClassName(parameterName: parameterType)
 	2. 数据域：dataName：dataType
 	3. 方法：methodName（parameterName：parameterType）：returnType
-3. 包含Main（）的类称为主类
-## 9.3 定义类和创建对象
+
+## 9.3 类的介绍
 1. 可以把两个类放在同一个文件中，但是文件中只能有一个类是公共类(public)
 	* 此外公共类(public)必须与文件同名
-
 2. 包含Main（）函数的类称为主类，结构如下：
 ```
 	public class mainClass
@@ -36,9 +38,10 @@
 		// Methods		
 	}
 ```
-3. 类的构造方法和其他方法定义为公共(public)，因此可以从其他类中访问
-## 9.4 使用构造方法构造对象
 
+3. 类的「构造方法」和其他方法定义为公共(public)，因此可以从其他类中访问
+
+## 9.4 构造方法
 1. 构造方法的必备要素：
 	1. 构造方法名和类名相同
 	2. 构造方法没有返回值类型，连void也没有
@@ -50,9 +53,90 @@
 	* 当且仅当类中没有明确定义任何构造方法时，才会自动提供它
 
 ## 9.5 通过引用变量访问对象
+1. 对象通过“.”来调用类中的方法和数据域
+	1. object1.method1(arguments);
+	2. object1.data1;
+2. 对象是通过「引用变量」来访问的
+	1. ClassName object1;
+		* 引用变量为object1，此符号此时代表ClassName类下的该对象
+	2. object1 = new ClassName();
+		* 新生成了一个ClassName类的对象，并将它赋给引用变量object1
+	3. ClassName object1 = new ClassName();
+		* 以上两步整合
+3. 静态(static) 与 实例
+	1. 「实例变量」只能通过实例调用的数据域变量
+		* object1.dataField;
+	2. 「实例方法」只能通过实例调用的方法
+		* object1.method1(arguments);
+	3. 「静态方法(static)」通过类名调用的方法
+		* className.method2(arguments);
+	4. 静态方法的定义方式
+		* public static void methodName(arguments);
+			1. public 代表类外是否可访问，不可访问为 private
+			2. static 代表是否可用"类名.方法名()"的方式调用
+			3. void 代表返回值类型
+4. Math类下的方法都是静态方法
+	* Math.pow(3,2.5);
+5. String 类型
+	1. String 是一个预定义的 Java 类
+	2. String 类型属于 引用类型
+		* String name;
+	3. 引用类型不属于 Java 基本类型，String 不属于 Java 基本类型
+	
+6. 类中的数据域也可能是「引用类型」的
+	```
+		Class student
+		{
+			/* data field */
+			String name;// 引用类型数据域 
+			int age;
+			boolean isMajor;
+			char grade;
+		}
+	```
+	
+7. 如果一个「引用类型」的变量没有赋初值，默认初值为 null
+	* ClassName var;// var is null
+ 	
+8. 在类中数据域不赋初值，系统会自动赋默认值
+	1. 数值类型 default 0 
+	2. boolean default false
+	3. char default '\u0000'
+	4. 引用类型 default null
+	
+9. Java 没有给方法中的局部变量赋默认值
+	* 此处的局部变量指定义在方法内部的变量，包括
+		1. 数值类型
+		2. boolean
+		3. char
+		4. 引用类型
+	* 下面的程序会报错
+	```
+		public static void main(String[] args)
+		{
+			// x y 是局部变量
+			int x;
+			String y;
+			System.out.println("print"+ x + y);
+		}
+	```
+	
+10. 基本类型 与 引用类型 区别
+	* 变量 代表 存储值的内存位置
+	
+	1. 基本类型：对应内存存储的是基本类型的值
+	2. 引用类型：对应内存存储的是对象的地址
+		* className c,"c"内存存储的是 对象c的地址
+		* 对象c的地址：对象c的内容存储在内存中的什么位置
+	3. 变量互相赋值
+		1. 基本类型：实际值的传递
+		2. 引用类型：地址的传递
+			* c1 指向对象1，c2指向对象2
+			* c1=c2后，c1和c2指向同一个对象
+			* 原c1指向的对象被「垃圾回收」
+			
+11. 如果 不需要 某个对象时，可以显式给它的 引用变量 赋值为 null
 
-1. 对象的数据和方法可以通过点操作符(.)通过对象的引用变量来进行访问
+## 9.6 Java库中的类
+1. Date 类
 
-
-</> abernathy
-MK-42
