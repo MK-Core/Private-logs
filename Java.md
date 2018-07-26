@@ -111,6 +111,7 @@
 		3. char
 		4. 引用类型
 	* 下面的程序会报错
+	
 	```
 		public static void main(String[] args)
 		{
@@ -139,4 +140,12 @@
 
 ## 9.6 Java库中的类
 1. Date 类
-
+	1. 定义 Date 对象：
+		`java.util.Date object1 = new java.util.Date();`
+	2. 构造方法：
+		1. `java.util.Date();`表示从GMT点流逝至今的时间
+		2. `java.util.Date(t0:long)`表示从GMT点流逝t0毫秒的时间
+	2. `object1.toString();` 以字符形式返回object1对应的时间
+	3. `object1.getTime();` 返回从GMT:1970年1月1日起到object1对象表示时间点之间流逝的毫秒
+	4. `object1.setTime();` 为object1设定一个新的流逝时间
+2. Random 类
