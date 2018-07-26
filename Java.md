@@ -149,3 +149,28 @@
 	3. `object1.getTime();` 返回从GMT:1970年1月1日起到object1对象表示时间点之间流逝的毫秒
 	4. `object1.setTime();` 为object1设定一个新的流逝时间
 2. Random 类
+	1. `Math.random()`：得到一个 0.0-0.1(!=1.0) 的double类型值
+	
+	2. java.util.Random类
+		1. 创建Random对象，必须指定一个种子
+			1. 默认种子是当前流逝的时间
+			2. 两个Random对象具有相同的种子，它们将产生相同的数列
+				* 软件测试常用一组固定顺序的随机数来重复生成测试案例
+		2. `Random(seed: long)`：构造函数
+		3. `nextInt()`：返回一个随机int值
+		4. `nextInt(n: int)`：返回一个0到n(!=n)之间的随机int值
+		5. `nextLong()`：返回一个随机long值
+		6. `nextDouble()`：返回一个0.0至1.0(!=1.0)的随机double值
+		7. `nextFloat()`：返回一个0.0至1.0F(!=1.0)的随机double值
+		8. `nextBoolean()`：返回一个随机boolean值
+3. Point2D类
+	1. 用于表示二维平面的点
+	2. `Point2D(x: double,y: double)`：构造函数
+	3. `distance(x1: double,y1: doulbe): double`：返回(x,y)到(x1,y1)的距离
+	4. `distance(p: Point2D): double`返回该点到对象p点的距离
+	5. `getX(): double`返回该点x坐标
+	6. `getY(): double`返回该点y坐标
+	7. `toString(): String`以字符串形式返回该点
+
+## 9.7 静态变量、常量和方法
+	
