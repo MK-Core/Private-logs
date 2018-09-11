@@ -1,1 +1,16 @@
-###2018/9/5
+# 2018/9/5
+## java输入输出流
+```
+  import java.util.*;
+  public class Untitled
+  {
+      public static void main(String[] args)
+      {
+          System.out.println("please input something");
+          Scanner x = new Scanner(System.in);
+          String s = x.nextLine();
+          System.out.println("normal running" + s);
+      }
+  }
+```
+
