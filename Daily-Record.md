@@ -1,6 +1,6 @@
 # 2018/9/11
 
-## java输入输出流
+## Java输入输出流
 
 ```
   import java.util.*;
