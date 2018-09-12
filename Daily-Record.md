@@ -54,4 +54,4 @@ class BinarySearch
     }
 }
 ```
-3. windows终端清屏方法：==cls==
+3. windows终端清屏方法：cls
