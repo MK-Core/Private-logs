@@ -312,5 +312,71 @@ class BinarySearch
 ```
 
 ## 何时使用异常
+1. 一个项目中多个类都会发生的共同异常应该考虑作为一个异常类
+2. 对于发生在个别方法中的简单错误最好进行局部处理，无需抛出异常
+3. 当必须处理不可预料的错误情况时使用`try-catch`块，不要用它处理简单的、可预料的情况
+
+## 重新抛出异常
+* 如果异常处理器并不能处理一个异常，或者只是简单的希望它的调用者注意到该异常，Java允许该异常处理器重新抛出异常
+```
+try
+{
+    statements;
+}
+catch (TheException ex)
+{
+    perform operations before exits;
+
+    throw ex;// 此处重新抛出异常
+}
+```
+
+## 链式异常
+```
+import java.util.*;
+
+public class ExceptionChains
+{
+  public static void main(String[] args)
+  {
+    try
+    {
+      method1();
+    }
+    catch (Exception ex)
+    {
+      ex.printStackTrace();
+    }
+  }
+
+  public static void method1() throws Exception
+  {
+    try
+    {
+      method2();
+    }
+    catch (Exception ex)
+    {
+      throw new Exception("New info from method1", ex);
+      // 注意：新异常在此处被打包
+    }
+  }
+
+  public static void method2() throws Exception
+  {
+    throw new Exception("New info from method2");
+  }
+}
+```
+
+1. method2 抛出一个异常，该异常被method1的catch捕获，并被包装成一个新异常
+2. 新异常被抛出，并在main方法中catch块中被捕获
+3. `printStackTrace()`显示从method1中抛出的新异常，然后显示从method2中抛出的原始异常
+
+## 创建自定义异常类
+1. Java定义了相当多的异常类，尽量使用它们而不要自定义新异常类
+2. 自定义异常类往往继承已有的Java原生异常类
+
+## File 类
 
 
