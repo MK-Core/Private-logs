@@ -1,5 +1,3 @@
-# 2018/9/11
-
 ## Java输入输出流
 
 ```
@@ -56,7 +54,70 @@ class BinarySearch
 ```
 3. windows终端清屏方法：cls
 
-# 2018/09/12
+
+
+## 二分查找
+
+
+
+```
+
+// BinarySearch Practice
+
+class BinarySearch
+
+{
+
+    public static int search(int[] num,int target)
+
+    {
+
+        int head = 0;
+
+        int tail = num.length;
+
+        while(head < tail)
+
+        {
+
+            int m = (tail - 1)/2 + 1;// find the middle point
+
+            if(target == num[m])
+
+            {
+
+                return m;
+
+            }
+
+            else if(target > num[m])
+
+            {
+
+                head = m + 1;
+
+            }
+
+            else
+
+            {
+
+                tail = m - 1;
+
+            }
+
+        }
+
+        return -1;
+
+    }
+
+}
+
+```
+
+3. windows终端清屏方法：cls
+
 ## 异常
 1. try-throw-catch 模板
 ```
@@ -173,3 +234,83 @@ class BinarySearch
 3. 捕获一个异常
     1. 如果在执行try块的过程中没有出现过异常，则会跳过catch子句
     2. 如果try块中的某条语句抛出一个异常，Java就会跳过try中的剩余语句，去处理异常
+        * 内部嵌套函数触发的异常如果不能被内部catch抓取，可以被调用者-外部函数的catch抓取，从而解决。如果在调用链下，异常适中不能被抓取，会报错。
+
+    * 注意事项： 
+        1. 如果一个catch块可以捕捉父类异常，那么该catch也可以捕捉其所有子类异常
+        2. catch块中设置异常的抓取顺序很重要，如果父类异常catch块出现在子类异常catch块之前，就会发生错误
+        3. Java强迫程序员处理必检异常(1.Error 2.Runtime Exception)
+            1. 如果在try内触发了必检异常
+            2. 那么必须在catch中捕捉该必检异常
+            3. 或者必须在try外函数名后声明`throws`该异常
+        ```
+        // 方案1 catch中捕捉必检异常
+        void p1()
+        {
+            try
+            {
+                p2();// 触发必检异常
+            }
+            catch(必检异常 ex)
+            {
+                //...
+            }
+        }
+
+        // 方案2 函数名后声明必检异常
+        void p1() throws 必检异常
+        {
+            try
+            {
+                p2();//触发必检异常
+            }
+            catch(必检异常 ex)
+            {
+                //...
+            }
+        }
+        ```
+
+    3. catch块处理多个异常参数时：
+    ```
+        catch(Exception1|Exception2|...|Exceptionk ex)
+        {
+            //Same code for handling these exceptions
+        }
+    ```
+
+## 从异常中获取信息
+* 可以通过调用一些异常类的成员函数，使异常信息显示的更完整
+
+## 异常运行顺序
+```
+    try
+    {
+        statement1;
+        statement2;// 此条触发异常
+        statement3;// 此条不再运行
+    }
+    catch(Exception)
+    {
+        //dealing with Exception
+    }
+
+    statement4;// 如果异常未被捕获，则不执行此条
+```
+
+## finally子句
+1. 在任何情况下`finally`块中的代码都会执行
+2. `finally`块不会被try块中的异常触发屏蔽
+3. `finally`块不会因为异常没有被捕捉到而被屏蔽
+4. 即使在`finally`块前有一个`return`语句，`finally`块仍然执行
+5. 格式：
+```
+    finally
+    {
+        finalStatements;
+    }
+```
+
+## 何时使用异常
+
+
