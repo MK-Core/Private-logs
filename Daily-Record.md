@@ -442,4 +442,139 @@ public class ExceptionChains
             2. 资源的声明和创建必须在同一行语句
             3. 资源的`close()`方法自动调用以关闭资源
 2. 使用Scanner类从文件中读取文本数据
+    1. 从键盘读数据`Scanner input = new Scanner(System.in);`
+    2. 从文件中读数据`Scanner input = new Scanner(new File(filename));`
+    3. 读取示例：
+    ```
+        import java.util.*;
+
+        public class test
+        {
+            public static void main(String[] args) throws Exception
+            {
+                java.io.File file = new java.io.File("score.txt");
+
+                Scanner input = new Scanner(file);// 为Scanner传递file对象
+
+                while (input.hasNext())// 当文件中仍有字符待读取时，返回true
+                {
+                    // 在待读取文件中，空格为分隔符
+                    String firstName = input.next();
+                    String mi = input.next();
+                    String lastName = input.next();
+                    int score = input.nextInt();
+                    System.out.print(firstName + " " + mi + " " + lastName + " " + score + "\n");
+                }
+
+                input.close();
+            }
+        }
+    ```
+    * 注意：
+        1. 可以使用`useDelimiter(String regex)`方法设置新的`分隔符`模式
+        2. next() 和 nextLine() 都会读取一个字符串
+            1. next() 方法读取一个由`分隔符`分隔的字符串
+            2. nextLine()读取一个由`换行符`结束的行
+    
+
+## Scanner 如何工作
+1. 一个特殊情况的对比
+    1. 从`test.txt`中读取`34 567`
+    ```
+        Scanner input = new Scanner(new File("test.txt"));
+        int intValue = input.nextInt();
+        String line = input.nextLine();
+        /*
+            intValue 包含的值是：34
+            line 包含的字符时：' '、'5'、'6'、'7'
+
+            * nextLine()从' '分隔符读取，到读取到'换行符'结束
+        */
+    ```
+
+    2. 从`键盘`键入`34回车567`
+    ```
+        Scanner input = new Scanner(System.in);
+        int intValue = input.nextInt();
+        String line = input.nextLine();
+        /*
+            intValue值是34
+            line 是空字符
+
+            * 这里的分隔符是"回车"，nextLine()读到"行分隔符"结束
+        */
+    ```
+
+    3. 可以使用Scanner直接从`字符串`中扫描数据
+    ```
+        Scanner input = new Scanner("13 14");
+        int sum = input.nextInt() + input.nextInt();
+        System.out.println("Sum is " + sum);
+
+        // Sum is 27
+    ```
+
+## 替换文本
+1. 目的：用一个新字符串替换文本文件中所有出现某个字符的地方
+2. 示例：
+```
+    /* 
+    文本替换程序
+    用一个新字符串替换文本文件中所有出现某个字符的地方
+    */
+    import java.io.*;
+    import java.util.*;
+
+    public class test
+    {
+        public static void main(String[] args) throws Exception
+        {
+            if (args.length != 4)// 限制一共可以传送四项字符串
+            {
+                System.out.println("Usage: java ReplaceText sourceFile targetFile oldStr newStr");
+                System.exit(1);
+            }
+
+            File sourceFile = new File(args[0]);
+            if(!sourceFile.exists())// 待修改替换源文件不存在
+            {
+                System.out.println("Source file" + args[0] + "does not exist");
+                System.exit(2);
+            }
+
+            File targetFile = new File(args[1]);
+            if (targetFile.exists())// 待输出的文件已有同名文件存在
+            {
+                System.out.println("Target file" + args[1] + " already exists");
+            }
+
+
+            // 通过从文件录入、从文件读取的方式，将源文件的指定内容替换为新内容
+            try
+            (
+                Scanner input = new Scanner(sourceFile);
+                PrintWriter output = new PrintWriter(targetFile);
+            )
+            {
+                while (input.hasNext())
+                {
+                    String s1 = input.nextLine();// 读取源文件中的字符
+                    String s2 = s1.replaceAll(args[2],args[3]);// 替换指定内容
+                    output.println(s2);// 写入输出文件
+                }
+            }
+            // 这种方式可以省略close()函数，自动关闭文件
+        }
+    }
+    /*
+    替换效果
+    java test arg[0] arg[1] arg[2] arg[3]
+    java test sourceFile targetFile oldString newString
+
+    sourceFile.txt: oldString1 oldString2 oldString3
+    targetFile.txt: newString2 newString2 newString3
+    */
+```
+
+## 从Web上读取数据
 
