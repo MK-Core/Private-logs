@@ -577,4 +577,160 @@ public class ExceptionChains
 ```
 
 ## 从Web上读取数据
+1. URL：统一资源定位器，即Web上的文件提供唯一的地址
+2. 为一下URL创建一个URL对象`http://www.google.com/index.html`
+```
+try
+{
+    URL url = new URL("http://www.google.com/index.html");
+}
+catch(MalformedURLException ex)
+{
+    ex.printStackTrace();
+}
+```
 
+3. 从键盘键入URL的方式：
+```
+    String URLString = new Scanner(System.in).next();
+    java.net.URL url = new java.net.URL(URLString);
+```
+
+4. 将该URL对应文件的全部内容以文件写入的方式录入`Scanner input = new Scanner(url.openStream());`
+
+5. 示例：判断URL对应文件的字节大小
+```
+    import java.util.*;
+
+    public class test
+    {
+        public static void main(String[] args)
+        {
+            System.out.println("Enter a URL");
+            String URLString = new Scanner(System.in).next();
+            
+            try
+            {
+                java.net.URL url = new java.net.URL(URLString);
+                int count = 0;
+                Scanner input = new Scanner(url.openStream());// 将该URL对应文件的全部内容以文件写入的方式录入
+
+                while(input.hasNext())
+                {
+                    String line = input.nextLine();
+                    count += line.length();
+                }
+
+                System.out.println("The file size is " + count + " characters");
+            }
+            catch (java.net.MalformedURLException ex)
+            {
+                System.out.println("Invalid URL");
+            }
+            catch(java.io.IOException ex)
+            {
+                System.out.println("I/O Errors: no such file");
+            }
+        }
+    }
+```
+
+## Web爬虫
+1. 爬虫思路
+```
+将起始URL添加到名为listOfPendingURLs的列表中;
+    当listOfPendingURLs不为空并且listOfTraversedURLs长度 <= 100
+    {
+        从listOfPendingURLs移除一个URL;
+
+        如果该URL不在listOfTraversedURLs中
+        {
+            将其添加到listOfTraversedURLs中;
+
+            显示该URL;
+
+            读取该URL的页面，并且对该页面中包含的每个URL都进行如下操作
+            {
+                如果不在listOfTraversedURLs中，则将其添加到listOfPendingURLs中;
+            }
+        }
+    }
+```
+
+2. 完整爬虫程序
+```
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class test
+{
+  public static void main(String[] args)
+  {
+    java.util.Scanner input = new java.util.Scanner(System.in);
+    System.out.print("Enter a URL: ");
+    String url = input.nextLine();
+    crawler(url);
+  }
+
+  public static void crawler(String startingURL)
+  {
+    ArrayList<String> listOfPendingURLs = new ArrayList<>();// 待处理的url
+    ArrayList<String> listOfTraversedURLs = new ArrayList<>();// 处理过的url
+
+    listOfPendingURLs.add(startingURL);
+    while(!listOfPendingURLs.isEmpty() && listOfTraversedURLs.size() <= 100)// 当遍历URL数目达到100后，程序结束
+    {
+      String urlString = listOfPendingURLs.remove(0);
+      if (!listOfTraversedURLs.contains(urlString))
+      {
+        listOfTraversedURLs.add(urlString);
+        System.out.println("Crawl "  + urlString);
+
+        for(String s: getSubURLs(urlString))// getSubURls(url)从Web页面读取每行，并查找该行的URL
+        {
+          if(!listOfTraversedURLs.contains(s))
+            listOfPendingURLs.add(s);// 页面中包含的URL以列表的形式返回
+        }
+      }
+    }
+  }
+
+  public static ArrayList<String> getSubURLs(String urlString)// 该函数用于将读取的URL列表
+  {
+    ArrayList<String> list = new ArrayList<>();
+
+    try
+    {
+      java.net.URL url = new java.net.URL(urlString);
+      Scanner input = new Scanner(url.openStream());
+
+      int current = 0;
+      while (input.hasNext())
+      {
+        String line = input.nextLine();
+        current += line.indexOf("http:",current);
+
+        while (current > 0)
+        {
+          int endIndex = line.indexOf("\"",current);
+          if(endIndex > 0)
+          {
+            list.add(line.substring(current,endIndex));
+            current = line.indexOf("http:",endIndex);
+          }
+          else
+            current = -1;
+        }
+      }
+    }
+    catch (Exception ex)
+    {
+      System.out.println("Error: " + ex.getMessage());
+    }
+
+    return list;
+  }
+}
+
+
+```
