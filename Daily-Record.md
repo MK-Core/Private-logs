@@ -378,5 +378,68 @@ public class ExceptionChains
 2. 自定义异常类往往继承已有的Java原生异常类
 
 ## File 类
+1. 绝对文件名：由文件名和它的完整路径以及驱动器字母组成
+2. 相对文件名：完整目录被忽略，只包括文件名及其后缀
 
+* 注意：
+    1. 在Windows中目录的分隔符是反斜线`\`，但是在Java中，反斜线是一个特殊的字符，应该写成`\\`的格式
+    2. 创建一个File对象并不会在机器上创建一个文件，不管文件是否存在都可以创建任意文件名的File实例，可以通过`exists()`方法来判断这个文件是否存在
+    3. `/`是Java的目录分隔符，这点和UNIX系统是一样的
+    4. 在程序中，不要直接使用Windows系统的`绝对文件名`，因为它会造成只能在Windows系统上工作，而不能再其他系统上工作
+    5. 通常使用`相对文件名`，为`当前目录下`的文件创建对象
+
+## 文件的输入和输出
+* 注意：File对象封装了文件或路径的属性，并不包括创建文件的方法，也不包括从文件中读写数据的方法
+
+1. 使用PrintWritter类向文本文件写入数据
+    1. 首先为文本文件创建一个PrintWriter对象`PrintWriter output = new PrintWriter(filename);`
+    2. 示例：
+    ```
+    import java.io.IOException;// 头部声明IO异常
+    import java.util.*;
+
+    public class test
+    {
+        public static void main(String[] args) throws IOException // 抛出IO异常
+        {
+            java.io.File file = new java.io.File("score.txt");// 创建要新建的文件对象
+
+            if (file.exists())// 判断该同名文件是否已经存在
+            {
+            System.out.println("File already exists");
+            System.exit(1);
+            }
+
+            java.io.PrintWriter output = new java.io.PrintWriter(file);// 创建文件输入流对象
+
+            output.print("John T Smith ");
+            output.println(90);
+            output.print("Eric K Jones ");
+            output.println(85);
+
+            output.close();
+            /*
+            必须使用close()方法关闭文件，
+            如果没有使用该方法
+            数据就不能正确的保存在文件中
+            */
+        }
+    }
+    ```
+
+    3. 使用try-with-resources自动关闭资源
+        1. 程序员会经常忘记关闭文件，Java提供了`try-with-resources`机制自动关闭文件
+        2. 格式：
+        ```
+            try (创建PrintWriter对象)
+            {
+                向File对象内写入信息
+            }
+        ```
+
+        3. 注意：
+            1. try后创建的资源必须是`AutoCloseable`子类型，比如：PrintWriter，具有一个close()方法
+            2. 资源的声明和创建必须在同一行语句
+            3. 资源的`close()`方法自动调用以关闭资源
+2. 使用Scanner类从文件中读取文本数据
 
