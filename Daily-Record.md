@@ -734,3 +734,78 @@ public class test
 
 
 ```
+
+## ArrayList
+
+1. ArrayList对象可以用于存储一个对象的列表
+  1. 可以创建一个数组存储对象，但是这个数组一旦创建，大小就固定了
+  2. Java 提供ArrayList类来存储不限定个数的对象
+
+2. ArrayList是一种泛型类：ArrayList<E>，可以用用一个具体类型或类名来代替E
+  1. 例：`ArrayList<String> cityNames = new ArrayList<String>();`此处的ArrayList是用于存储字符串
+  * 注意：E必须是一种对象，不可以是基本数据类型
+  ```
+    // 错误写法
+    ArrayList<int> list = new ArrayList<>();
+    // 可以创建一个Integer类型的对象
+    ArrayList<Integer> list = new ArrayList<>();
+  ```
+
+3. 由于使用了“类型推导”特征，构造方法不再要求给出具体类型，也就是说后一个"<>"可以空白
+
+4. 可以用这样的方式直接遍历ArrayList的内容: `System.out.println(list.toString());`
+
+5. ArrayList的两个优点：
+    1. ArrayList的大小是灵活的，而创建数组必须定义大小
+    2. ArrayList包含很多方便的方法，如果使用数组，需要编写额外的方法
+
+* 重要应用：`java.util.Arrays.sort(array);`可以直接对"普通数组"和"对象数组"进行排序
+```
+import java.util.*;
+import java.util.ArrayList;
+
+public class test
+{
+  public static void main(String[] args)
+  {
+    ArrayList<String> cityList = new ArrayList<>();
+
+    cityList.add("London");
+    cityList.add("Denver");
+    cityList.add("Paris");
+    cityList.add("Miami");
+    cityList.add("Seoul");
+    cityList.add("Tokyo");
+
+    System.out.println("List size? " + cityList.size());
+    System.out.println("Is Miami in the list? " + cityList.contains("Miami"));
+    System.out.println("The location of Denver in the list? " + cityList.indexOf("Denver"));
+    System.out.println("Is the list empty? " + cityList.isEmpty());
+
+    cityList.add(2,"Xian");
+    cityList.remove("Miami");
+    cityList.remove(1);
+
+    System.out.println(cityList.toString());// 可以用这样的方式直接遍历ArrayList的内容
+
+    for (int i = cityList.size()-1; i >= 0; i--)
+      System.out.print(cityList.get(i) + " ");
+    System.out.println();
+  }
+}
+```
+
+## for-each循环
+```
+    int[] data = {1,2,3,4};
+
+    for(int a : data)
+    {
+      System.out.print(a + " ");
+    }
+```
+
+1. `int a`相当于数组中每个元素的一个替身
+2. 因此a的基本数据类型一定要和数组一致
+
+
