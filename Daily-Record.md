@@ -54,70 +54,6 @@ class BinarySearch
 ```
 3. windows终端清屏方法：cls
 
-
-
-## 二分查找
-
-
-
-```
-
-// BinarySearch Practice
-
-class BinarySearch
-
-{
-
-    public static int search(int[] num,int target)
-
-    {
-
-        int head = 0;
-
-        int tail = num.length;
-
-        while(head < tail)
-
-        {
-
-            int m = (tail - 1)/2 + 1;// find the middle point
-
-            if(target == num[m])
-
-            {
-
-                return m;
-
-            }
-
-            else if(target > num[m])
-
-            {
-
-                head = m + 1;
-
-            }
-
-            else
-
-            {
-
-                tail = m - 1;
-
-            }
-
-        }
-
-        return -1;
-
-    }
-
-}
-
-```
-
-3. windows终端清屏方法：cls
-
 ## 异常
 1. try-throw-catch 模板
 ```
@@ -181,14 +117,14 @@ class BinarySearch
     }
 ```
 
-3. 异常处理最根本的优势就是：将检测错误从处理错误中分离出来
-4. 技巧： `input.nextLine();`单独放在一行用以丢弃当前输入行，便于键入回车键更换新行
+2. 异常处理最根本的优势就是：将检测错误从处理错误中分离出来
+3. 技巧： `input.nextLine();`单独放在一行用以丢弃当前输入行，便于键入回车键更换新行
 
-5. 思考 ?
+4. 思考 ?
     1. `System.out.println("changed" + 1/0);`抛出异常
     2. `System.out.println("changed" + 1.5/0);`不会抛出异常,得到Infinity
 
-6. `ex.getMessage()`放在`System.out.println("...")`内，用以重复异常构造函数内的字符串内容
+5. `ex.getMessage()`放在`System.out.println("...")`内，用以重复异常构造函数内的字符串内容
 
 ## 异常类型
 1. 系统错误：用Error类表示，由Java虚拟机抛出
