@@ -744,4 +744,35 @@ public class test
 1. `int a`相当于数组中每个元素的一个替身
 2. 因此a的基本数据类型一定要和数组一致
 
+## Comparable接口
+
+1. Number类(包含:Integer、BigInteger..等)、String类、Date类都扩展了，Comparable接口，因此都继承了compareTo方法
+2. 也就是说，数字是可比较的，字符串是可比较的，日期也是可比较的
+3. `java.util.Arrays.sort()`方法是通过`compareTo()`方法来实现的，因此如果进行排序的对象数组没有扩展`Comparable接口`，那么就不能用`java.util.Arrays.sort()`方法进行排序
+4. 没有扩展Comparable接口的类想要调用`compareTo()`方法，或者使用`java.util.Arrays.sort()`方法进行排序：
+    * 可以采用：创建子类扩展`Comparable接口`的方式，用子类对象来调用
+
+* 强烈建议：对于两个对象o1和o2，应该确定当且仅当`o1.equals(o2)`为`true`时`o1.compareTo(o2) == 0`成立
+
+## Cloneable 接口
+1. Cloneable接口给出了一个可克隆的对象，已解决需要创建一个对象拷贝的情况
+2. Cloneable 接口是空的
+    1. 一个空体接口称为标记接口
+    2. 标记接口用于表示一个类具有某些特定的属性
+    3. 实现`Cloneable接口`的类标记为可克隆，它的对象可以用`Object类`中的`clone()`方法克隆
+3. 示例：
+    1. 引用变量指向同一个对象`Calendar calendar1 = calendar;`
+    2. 创建一个名字不同，内容相同的新对象`Calendar calendar2 = (Calendar)calendar.clone();`
+    3. 以上`引用变量指向`的方式，对对象进行修改操作后，效果是同步的
+    4. 以上`克隆`的方式，实际是新建一个对象，效果是独立的
+4. 可以用clone方法来克隆一个数组`int[] list2 = list1.clone();`
+5. 重写在自定义类内部的克隆方法`clone()`
+```
+  @Override
+  public Object clone() throws CloneNotSupportedException
+  {
+    return super.clone();
+  }
+```
+
 
