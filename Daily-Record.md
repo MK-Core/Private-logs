@@ -180,6 +180,8 @@ class BinarySearch
             2. 那么必须在catch中捕捉该必检异常
             3. 或者必须在try外函数名后声明`throws`该异常
         ```
+        // 调用p1()函数时，有可能触发异常时：
+        
         // 方案1 catch中捕捉必检异常
         void p1()
         {
@@ -196,14 +198,7 @@ class BinarySearch
         // 方案2 函数名后声明必检异常
         void p1() throws 必检异常
         {
-            try
-            {
-                p2();//触发必检异常
-            }
-            catch(必检异常 ex)
-            {
-                //...
-            }
+            //...不必再写try-catch
         }
         ```
 
@@ -771,7 +766,28 @@ public class test
   @Override
   public Object clone() throws CloneNotSupportedException
   {
-    return super.clone();
+    return super.clone();// 调用Object类中已经写好的clone()方法
+  }
+```
+
+6. 深复制与浅复制：当被复制的目标是对象时
+    1. 浅复制：复制的是对象的引用
+    2. 深复制：复制的是对象的内容
+
+    * 检测方法：当`o1.whenBuilt == o2.whenBuilt`为真时，为浅复制
+
+7. Object类中的clone方法将原始对象的每个数据复制给目标对象
+    1. 如果一个数据域是基本类型的，复制的就是它的值
+    2. 如果一个数据域是对象类型，**复制的是它的引用**
+
+8. 如果希望为`House对象`执行深复制，代码如下
+```
+  public Object clone() throws CloneNotSupportedException
+  {
+    House houseClone = (House)super.clone();
+
+    houseClone.whenBuilt = (java.util.Date)(whenBuilt.clone());
+    return houseClone;
   }
 ```
 
