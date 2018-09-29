@@ -123,4 +123,6 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
     // 此处显示p1的age值
     ```
 
-3. `getClass()`方法
+3. `getClass()`方法：返回当前对象所属字节码文件-类名
+
+## 188th
