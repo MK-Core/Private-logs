@@ -102,4 +102,25 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
         * 如果子类覆盖方法中触发了异常，那么只能采用try-catch不能抛出
 
 ## Object类及其方法
-1. 
+1. Object：所有类的根类
+    * Object是不断抽取而来的，具备所有对象都具备的共性内容。
+
+### 常用的共性内容：
+1. `equals()`方法
+  1. 参数为Object类型：`equals(Object o)`
+  2. 一般都会覆盖此方法，根据对象的特有内容，建立判断对象是否相同的依据
+  3. 比较两对象时和`p1 == p2`相同，比较的的是两变量的地址
+2. `hashCode()`方法
+    1. 两个对象相同的依据：两个对象的哈希值相同，并且两个对象的内容相同
+    2. 重写该方法后，可以返回该对象对应的任意数据域
+    ```
+     public int hashCode()
+    {
+        return this.age;
+    }
+
+    System.out.println(p1.hashCode());
+    // 此处显示p1的age值
+    ```
+
+3. `getClass()`方法
