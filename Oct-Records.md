@@ -65,4 +65,41 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
     2. 当异常不能内部解决时，采用throws
 7. JVM默认异常处理机制就是调用`ex.printStackTrace();`
 
-### 179th
+8. 多catch情况：一定要把父类catch情况放在最下面
+    * 如果catch不能解决当前抛出的异常，可以选择在catch模块中继续抛出异常，此时需要在该try-catch模块的外层函数外继续声明`throws <二次抛出异常名>`
+
+9. 异常处理原则
+    1. 函数内容包含了需要检测的异常:(1) 函数上必须要声明 or (2) 在内部用try-catch捕捉，否则编译失败
+    2. 如果调用了声明异常的函数，要么try-catch要么throws，否则编译失败
+    3. 一个功能如果抛出多个异常，那么调用该功能时候，必须有对应多个catch进行针对性的处理。内部有几个需要检测的异常，就抛出几个异常。抛出几个异常，就catch几个异常。
+
+10. finally模块
+    1. finally语句的应用:通常用于释放资源
+        1. 连接数据库
+        2. 查询，出现Exception
+        3. 关闭连接，finally设置关闭数据库
+    2. `return;`语句并不能阻止`finally`代码段运行
+    3. `System.exit(0);`关闭了JVM，因此可以阻止`finally`代码段运行
+    4. try-finally代码组合：异常无法直接catch处理，但是资源需要关闭
+    ```
+        void method() throws Exception
+        {
+            try
+            {
+                throw new Exception();
+            }
+
+            finally
+            {
+                // 关闭资源
+            }
+        }
+    ```
+
+11. 异常的注意事项：
+    1. 子类在覆盖父类方法时，如果父类方法抛出了异常。那么子类的方法只能抛出与父类相同的异常，或抛出该异常的子类异常。也可以选择不抛出异常。
+    2. 如果父类的方法没有抛出异常，那么子类在覆盖时，绝对不能抛出异常。
+        * 如果子类覆盖方法中触发了异常，那么只能采用try-catch不能抛出
+
+## Object类及其方法
+1. 
