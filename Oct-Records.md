@@ -172,7 +172,7 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 
 8. Java中的访问权限介绍
 
-       | public | protected | default | private
+------ | public | protected | default | private
 ------ | ------ | --------- | ------- | -------
 同一类中 | ok | ok | ok | ok |
 同一包中 | ok | ok | ok | 
