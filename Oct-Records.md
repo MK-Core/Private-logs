@@ -1,15 +1,15 @@
 ## 泛型简介
 1. 泛型可以参数化类型,这个能力使我们可以定义泛型类型的类或者方法，随后编译器会用具体的类型代替它。
 ```
-public class Box<T>
-{
-  private T object;
-  public void set(T object) { this.object = object; }
-  public T get() { return object; }
-}
-
-Box<Integer> integerBox = new Box<Integer>();
-Box<Double> doubleBox = new Box<Double>();
+	public class Box<T>
+	{
+	  private T object;
+	  public void set(T object) { this.object = object; }
+	  public T get() { return object; }
+	}
+	
+	Box<Integer> integerBox = new Box<Integer>();
+	Box<Double> doubleBox = new Box<Double>();
 ```
 
 2. 泛型方法: 在返回类型前加上要泛型的类型
@@ -126,7 +126,7 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 3. `getClass()`方法：返回当前对象所属的字节码文件-类名
 4. `toString()`方法：建议重写，建立特有内容
 
-## 包 package
+## 包 package 简介
 1. 对同名类文件进行分类管理
 2. 给类提供多层命名空间
 3. 包在代码中的定义方式：`package mypack;`
@@ -134,8 +134,67 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 4. 类名的全称是`PackageName.ClassName`
 5. 包也是一种封装形式
 6. 包以文件夹的形式体现
-7. 在当前目录下将`.class`文件放入包中：`javac -d . test.java`
-    * 此时生成的`test.class`就放置在写在`test.java`内的包文件夹中
+
+7. 在终端中编译：
+	1. 在当前目录下将`.class`文件放入包中：`javac -d . test.java`
+	2. 此时生成的`test.class`就放置在写在`test.java`内的包文件夹中
+8. 在终端中运行：
+	1. 格式：`java mypack.test`
+	2. 多个包叠加格式：`java pack1.pack2.pack3.test`
+## 包与包之间的访问
+1. 在当前包下根据类名找源文件名
+2. 自动生成class文件的条件：
+	* 保证要用的源文件不存在的情况下，该源文件有和类名称相同的源文件名 
+3. test这个类已经有所属的包，所以必须明确其包名`packName.test`
+4. 当两个包不在同一路径下时，事先设定在终端设定`set classpath = C:\myclasspath`
+5. 包与包之间进行类访问，被访问的包中的类必须是public，被访问的类中的方法也必须是public
+6. 不同包中的类是否可以继承
+7. 在主包中创建Bpack对象时，并不能拿到method()方法，只有通过继承才能拿到该方法
+```
+	package packB;
+	public class Bpack
+	{
+		protected void method()
+		{
+			System.out.println("只有Bpack类的子类可以调用此方法");
+		}
+	}
+	
+	// Untitled extends packB.Bpack
+	
+	Untitled u = new Untitled();
+	packB.Bpack b = new packB.Bpack();
+	
+	u.method();// 如果是protected，只能通过此方式调用method
+	
+	b.method();// 如果是protected，此方式调用method无效
+```
+
+8. Java中的访问权限介绍
+
+       | public | protected | default | private
+------ | ------ | --------- | ------- | -------
+同一类中 | ok | ok | ok | ok |
+同一包中 | ok | ok | ok | 
+子类中 | ok | ok |
+不同包中 | ok |
+
+## import 包的导入
+1. `import packa.test;` 只导入test类
+2. `import packa.*;`应用通配符导packa包中的全部类
+	1. 此方案只导入包中的类，不导入包中的包
+	2. 导入包的原则，用到哪个类就导入哪个类，不建议全部导入
+3. 一个`.java`文件中只能有一个`pacakage`语句放在第一行，可以有多个`import`
+
+## Jar：java的压缩包
+1. 终端命令格式
+	1. 压缩`jar -cf jarName.jar packName`
+	2. 解压缩`jar -xvf jarName.jar`
+2. Jar包的直接使用
+	1. `set classpath = ./jarName.jar`将classpath设定为当前目录下的jar包
+	2. `java mypack.test`就可以用java虚拟机直接调用了
+	3. 此方法适用于调用一下封装好API的jar包
+
 
 ## 多线程
 1. 进程：正在进行中的程序，
@@ -144,3 +203,5 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 3. 一个进程当中至少要有一个线程
 4. 开启多线程是为了同时运行多部分代码
 5. 每一个线程都有自己要运行的内容，称为该线程的任务
+
+
