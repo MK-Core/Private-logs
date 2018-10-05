@@ -100,6 +100,42 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
     1. 子类在覆盖父类方法时，如果父类方法抛出了异常。那么子类的方法只能抛出与父类相同的异常，或抛出该异常的子类异常。也可以选择不抛出异常。
     2. 如果父类的方法没有抛出异常，那么子类在覆盖时，绝对不能抛出异常。
         * 如果子类覆盖方法中触发了异常，那么只能采用try-catch不能抛出
+12. 一个特殊的例子
+```
+	class test
+{
+		public static void func()
+		{
+			try
+			{
+				throw new Exception();
+				System.out.println("A");
+				// 一旦确定一定不能访问该语句时，编译就会报错
+				/*
+					如果throw new Exception()被封装在函数中，并在此条调用
+					那么说明后一句System.out.println("A")就有被调用的可能
+					因此不会编译出错
+				*/
+			}
+			catch(Exception e)
+			{
+				System.out.println("B");
+			}
+		}
+		public static void main(String[] args)
+		{
+			try
+			{
+				func();
+			}
+			catch(Exception e)
+			{
+				System.out.println("C");
+			}
+			System.out.println("D");
+		}
+}
+```
 
 ## Object类及其方法
 1. Object：所有类的根类
@@ -172,7 +208,7 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 
 8. Java中的访问权限介绍
 
------- | public | protected | default | private
+       | public | protected | default | private
 ------ | ------ | --------- | ------- | -------
 同一类中 | ok | ok | ok | ok |
 同一包中 | ok | ok | ok | 
@@ -204,4 +240,192 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 4. 开启多线程是为了同时运行多部分代码
 5. 每一个线程都有自己要运行的内容，称为该线程的任务
 
+## 多线程的好处和弊端
+1. 多线程的好处：解决了多部分同时运行的问题
+2. 多线程的弊端：线程太多回到效率低
+3. 应用程序的执行都是CPU快速切换完成的，这个切换事随机的
+	1. 程序之间进程切换非常快，感受不到有切换动作，看起来像是同时执行
+	2. 当开启的程序过多时，每个程序被分配的CPU的频率会变小，这时候体检变卡，可以通过增加CPU解决
+	
+## JVM中的多线程解析
+1. JVM启动时启动了多个线程，至少有两个线程(每个线程都有自己的任务)
+	1. 执行main函数的线程
+		* 该线程的任务代码都定义在main函数中
+	2. 负责垃圾回收的线程
+		* 该线程的任务在垃圾回收器内部定义
+2. Main函数运行结束代表主线程结束，JVM的其它线程仍然在进行，JVM没有结束
 
+## Thread类-多线程的创建方式
+1. 创建线程方式一：继承Thread类
+	1. 定义一个类继承Thread类
+	2. 覆盖Thread类中的run方法
+	3. 直接创建Thread类的子类对象，创建线程
+	4. 调用`o.start()`方法开启线程并自动运行`run()`函数的内容
+2. 创建线程的目的是为了开启一条执行路径，去运行指定的代码，和其它代码实现同时运行
+	1. 运行的指定代码，就是这个执行路径的任务
+	2. JVM创建的主线程的任务都定义在主函数中
+3. 自定义的线程任务
+	1. Thread类中的run方法就是封装自定义线程运行任务的函数
+	2. 开启线程是为了运行指定代码，所以通过继承Thread类，并复写run方法，将运行的代码定义在run方法中即可
+4.  多线程示例
+```
+	class Demo extends Thread
+	{
+		private String name;
+		Demo(String name)
+		{
+			super(name);// 自定义线程名称
+		}
+		
+		// 最好采用这样的方式来书写 run()方法
+		public void run()
+		{
+			show();
+		}
+		
+		public void show()
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
+			}
+		}
+	}
+	
+	public class Untitled
+	{
+		public static void main(String[] args)
+		{
+			Demo d1 = new Demo("Jack");
+			Demo d2 = new Demo("小强");
+			
+			d1.start();// 线程1
+			d2.start();// 线程2
+		}
+	}
+```
+
+## Thread类中的方法 & 线程名称
+1. 获取线程的名称: 可以通过Thread的`getName()`方法获取线程名称`Thread-编号(从0开始)`
+	1. 线程在完成`Thread t = new Thread()`之后就完成了线程的命名
+	2. `getName()`获取的是对象的名称
+2. 获取运行时线程的名称：`Thread.currentThread().getName()`
+3. 主线程名称为`main`
+4. 继承Thread类后，自定义线程名称的方式：`super(string);`
+
+## 多线程运行图解
+1. 在栈中开辟多个线程，每个线程调用的函数单独进对应线程的栈区
+2. 各个线程之间运行独立互不影响，主线程出栈后，JVM直至所有线程运行完毕再结束
+3. 当其中一个线程抛出异常时，该线程终止，其它线程照常运行，不受影响
+
+## 线程的四种状态
+1. 被创建
+2. 运行：具备着执行资格，具备着执行权`o.start()`
+	1. CPU的执行资格：可以被CPU处理，在处理队列中排队
+	2. CPU的执行权：正在被CPU处理
+	
+	* 临时阻塞状态：具备执行资格，正在等待执行权(不具备)
+3. 冻结：
+	1. 线程运行以后调用`sleep(time)`进入冻结状态，此时保留线程存活但不运行，函数时间到自动苏醒
+	2. 线程调用`wait()`进入无限期冻结，通过调用`notify()`唤醒线程
+	3. 必须正在运行状态才能进入冻结状态
+4. 消亡：释放执行权的同时，释放执行资格
+	1. `run()`方法结束
+	2. 调用`stop()`方法
+	
+## Runnable接口-创建线程的第二种方式
+* 当某类有了自己的父类，因为不支持多继承，不能再继承Thread，只能通过此方式创建线程
+
+1. 通过接口的形式实现：扩展Demo类的功能，让其中的内容可以作为线程任务执行
+2. 步骤
+	1. 定义类实现Runnable接口
+	2. 覆盖接口中的run方法，将线程的任务代码封装到run方法中
+	3. 通过Thread类创建线程对象，并将Runnable接口的子类对象作为Thread类的构造函数的参数进行传递
+		* 传递对象的原因：在线程对象创建时就必须明确要运行的任务
+	4. 调用线程对象的start方法开启线程
+3. `new Thread(o)`运行实现接口的run方法,而不运行Thread原声run方法的原因:
+```
+// Thread 内部结构
+	class Thread
+	{
+		private Runnable r;
+		Thread(){}
+		
+		Thread(Runnable r)
+		{
+			this.r = r;
+		}
+		public void run()
+		{
+			if (r != null)
+			r.run();
+		}
+		public void start()
+		{
+			run();
+		}	
+	}
+	
+	class ThreadImp1 implements Runnable
+	{
+		public void run()
+		{
+			System.out.println("Override run function running");
+		}
+	}
+	
+	ThreadImp1 i = new ThreadImp1();
+	Thread t = new Thread(i);// 此处将i传递给了r，进而调用了`r.run()`
+	t.start();
+```						
+
+4. Runnable 示例
+```
+	class Demo implements Runnable
+	{
+		private String name;
+	
+		public void run()
+		{
+			show();
+		}
+		
+		public void show()
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
+			}
+		}
+	}
+	
+	public class Untitled
+	{
+		public static void main(String[] args)
+		{
+			Demo d = new Demo();
+			
+			Thread t1 = new Thread(d);
+			Thread t2 = new Thread(d);	
+				
+			t1.start();
+			t2.start();
+		}
+	}
+```
+
+## Runnable接口 创建线程方式的优点
+1. 作用是将线程的任务进行了对象的封装
+```
+	Runnable r = new Student();
+	
+	Thread t = new Thread(r);
+	
+	t.start();
+```
+
+2. 实现Runnable接口的好处：
+	1. 可将线程的任务从线程的子类中分离出来，进行了单独的封装，按照面相对象的思想将任务封装成对象
+	2. 避免了java单继承的局限性
+	
+3. 创建线程的第二种方式较为常用
