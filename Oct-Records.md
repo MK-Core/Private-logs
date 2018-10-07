@@ -406,7 +406,7 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 			Demo d = new Demo();
 			
 			Thread t1 = new Thread(d);
-			Thread t2 = new Thread(d);	
+			Thread t2 = new Thread(d);
 				
 			t1.start();
 			t2.start();
@@ -429,3 +429,89 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 	2. 避免了java单继承的局限性
 	
 3. 创建线程的第二种方式较为常用
+
+## 多线程-卖票示例
+```
+	class Ticket implements Runnable// extends Thread
+{
+	private /*static*/ int num = 100;
+	
+	public void run()
+	{
+		sale();
+	}
+	
+	public void sale()
+	{
+		while(true)
+		{
+			if (num > 0)
+			{
+				System.out.println(Thread.currentThread().getName() + " " + num--);
+				
+				if (num == 0)
+					return ;
+			}
+		}
+	}
+}
+
+public class Untitled
+{
+	public static void main(String[] args)
+	{
+		
+		Ticket r = new Ticket();// 创建一个线程任务对象
+		
+		// 每个线程对象针对的都是同一个对象r，因此共享数据num
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+		Thread t3 = new Thread(r);
+		Thread t4 = new Thread(r);
+		
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+	}
+}
+```
+
+* 多次启动一个线程是非法的
+
+```
+	t1.start();
+	t1.start();// 此处报错
+	t1.start();
+	t1.start();
+```		
+
+# 线程安全问题的现象
+* 只能try-catch不能throws的情况
+	1. 将触发异常的函数不能throws异常，因为该函数所覆盖父类同名函数没有抛出该异常
+	2. 此时只能try-catch
+	
+## 线程安全问题的原因
+1. 多个线程在操作共享的数据
+2. 操作共享数据的线程代码有多条
+
+* 当一个线程在执行操作共享数据的多条代码过程中，其它线程参与了运算，就会导致线程安全问题
+
+## 同步代码块-解决多线程安全问题
+
+1. 解决思路：将多条操作共享数据的线程代码封装起来
+	1. 当有线程在运行这些代码时，其它线程不可以参与运算
+	2. 必须把当前这些代码都执行完毕后，其它线程才可以参与运算
+	
+2. 同步代码块格式：
+```
+	synchronized(object)
+	{
+		// 同步内容
+	}
+```
+
+## 同步代码块的好处和弊端
+1. 同步的好处：解决了线程共享数据的安全问题
+2. 同步的弊端：相对降低效率，因为同步外的线程都会判断同步锁
+
