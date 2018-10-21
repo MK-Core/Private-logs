@@ -1,15 +1,15 @@
 ## 泛型简介
 1. 泛型可以参数化类型,这个能力使我们可以定义泛型类型的类或者方法，随后编译器会用具体的类型代替它。
 ```
-    public class Box<T>
-    {
-      private T object;
-      public void set(T object) { this.object = object; }
-      public T get() { return object; }
-    }
-    
-    Box<Integer> integerBox = new Box<Integer>();
-    Box<Double> doubleBox = new Box<Double>();
+	public class Box<T>
+	{
+	  private T object;
+	  public void set(T object) { this.object = object; }
+	  public T get() { return object; }
+	}
+	
+	Box<Integer> integerBox = new Box<Integer>();
+	Box<Double> doubleBox = new Box<Double>();
 ```
 
 2. 泛型方法: 在返回类型前加上要泛型的类型
@@ -102,38 +102,38 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
         * 如果子类覆盖方法中触发了异常，那么只能采用try-catch不能抛出
 12. 一个特殊的例子
 ```
-    class test
+	class test
 {
-        public static void func()
-        {
-            try
-            {
-                throw new Exception();
-                System.out.println("A");
-                // 一旦确定一定不能访问该语句时，编译就会报错
-                /*
-                    如果throw new Exception()被封装在函数中，并在此条调用
-                    那么说明后一句System.out.println("A")就有被调用的可能
-                    因此不会编译出错
-                */
-            }
-            catch(Exception e)
-            {
-                System.out.println("B");
-            }
-        }
-        public static void main(String[] args)
-        {
-            try
-            {
-                func();
-            }
-            catch(Exception e)
-            {
-                System.out.println("C");
-            }
-            System.out.println("D");
-        }
+		public static void func()
+		{
+			try
+			{
+				throw new Exception();
+				System.out.println("A");
+				// 一旦确定一定不能访问该语句时，编译就会报错
+				/*
+					如果throw new Exception()被封装在函数中，并在此条调用
+					那么说明后一句System.out.println("A")就有被调用的可能
+					因此不会编译出错
+				*/
+			}
+			catch(Exception e)
+			{
+				System.out.println("B");
+			}
+		}
+		public static void main(String[] args)
+		{
+			try
+			{
+				func();
+			}
+			catch(Exception e)
+			{
+				System.out.println("C");
+			}
+			System.out.println("D");
+		}
 }
 ```
 
@@ -154,7 +154,7 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
     {
         return this.age;
     }
- 
+
     System.out.println(p1.hashCode());
     // 此处显示p1的age值
     ```
@@ -172,38 +172,38 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 6. 包以文件夹的形式体现
 
 7. 在终端中编译：
-    1. 在当前目录下将`.class`文件放入包中：`javac -d . test.java`
-    2. 此时生成的`test.class`就放置在写在`test.java`内的包文件夹中
+	1. 在当前目录下将`.class`文件放入包中：`javac -d . test.java`
+	2. 此时生成的`test.class`就放置在写在`test.java`内的包文件夹中
 8. 在终端中运行：
-    1. 格式：`java mypack.test`
-    2. 多个包叠加格式：`java pack1.pack2.pack3.test`
+	1. 格式：`java mypack.test`
+	2. 多个包叠加格式：`java pack1.pack2.pack3.test`
 ## 包与包之间的访问
 1. 在当前包下根据类名找源文件名
 2. 自动生成class文件的条件：
-    * 保证要用的源文件不存在的情况下，该源文件有和类名称相同的源文件名 
+	* 保证要用的源文件不存在的情况下，该源文件有和类名称相同的源文件名 
 3. test这个类已经有所属的包，所以必须明确其包名`packName.test`
 4. 当两个包不在同一路径下时，事先设定在终端设定`set classpath = C:\myclasspath`
 5. 包与包之间进行类访问，被访问的包中的类必须是public，被访问的类中的方法也必须是public
 6. 不同包中的类是否可以继承
 7. 在主包中创建Bpack对象时，并不能拿到method()方法，只有通过继承才能拿到该方法
 ```
-    package packB;
-    public class Bpack
-    {
-        protected void method()
-        {
-            System.out.println("只有Bpack类的子类可以调用此方法");
-        }
-    }
-    
-    // Untitled extends packB.Bpack
-    
-    Untitled u = new Untitled();
-    packB.Bpack b = new packB.Bpack();
-    
-    u.method();// 如果是protected，只能通过此方式调用method
-    
-    b.method();// 如果是protected，此方式调用method无效
+	package packB;
+	public class Bpack
+	{
+		protected void method()
+		{
+			System.out.println("只有Bpack类的子类可以调用此方法");
+		}
+	}
+	
+	// Untitled extends packB.Bpack
+	
+	Untitled u = new Untitled();
+	packB.Bpack b = new packB.Bpack();
+	
+	u.method();// 如果是protected，只能通过此方式调用method
+	
+	b.method();// 如果是protected，此方式调用method无效
 ```
 
 8. Java中的访问权限介绍
@@ -218,18 +218,18 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 ## import 包的导入
 1. `import packa.test;` 只导入test类
 2. `import packa.*;`应用通配符导packa包中的全部类
-    1. 此方案只导入包中的类，不导入包中的包
-    2. 导入包的原则，用到哪个类就导入哪个类，不建议全部导入
+	1. 此方案只导入包中的类，不导入包中的包
+	2. 导入包的原则，用到哪个类就导入哪个类，不建议全部导入
 3. 一个`.java`文件中只能有一个`pacakage`语句放在第一行，可以有多个`import`
 
 ## Jar：java的压缩包
 1. 终端命令格式
-    1. 压缩`jar -cf jarName.jar packName`
-    2. 解压缩`jar -xvf jarName.jar`
+	1. 压缩`jar -cf jarName.jar packName`
+	2. 解压缩`jar -xvf jarName.jar`
 2. Jar包的直接使用
-    1. `set classpath = ./jarName.jar`将classpath设定为当前目录下的jar包
-    2. `java mypack.test`就可以用java虚拟机直接调用了
-    3. 此方法适用于调用一下封装好API的jar包
+	1. `set classpath = ./jarName.jar`将classpath设定为当前目录下的jar包
+	2. `java mypack.test`就可以用java虚拟机直接调用了
+	3. 此方法适用于调用一下封装好API的jar包
 
 
 ## 多线程
@@ -244,71 +244,71 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 1. 多线程的好处：解决了多部分同时运行的问题
 2. 多线程的弊端：线程太多回到效率低
 3. 应用程序的执行都是CPU快速切换完成的，这个切换事随机的
-    1. 程序之间进程切换非常快，感受不到有切换动作，看起来像是同时执行
-    2. 当开启的程序过多时，每个程序被分配的CPU的频率会变小，这时候体检变卡，可以通过增加CPU解决
-    
+	1. 程序之间进程切换非常快，感受不到有切换动作，看起来像是同时执行
+	2. 当开启的程序过多时，每个程序被分配的CPU的频率会变小，这时候体检变卡，可以通过增加CPU解决
+	
 ## JVM中的多线程解析
 1. JVM启动时启动了多个线程，至少有两个线程(每个线程都有自己的任务)
-    1. 执行main函数的线程
-        * 该线程的任务代码都定义在main函数中
-    2. 负责垃圾回收的线程
-        * 该线程的任务在垃圾回收器内部定义
+	1. 执行main函数的线程
+		* 该线程的任务代码都定义在main函数中
+	2. 负责垃圾回收的线程
+		* 该线程的任务在垃圾回收器内部定义
 2. Main函数运行结束代表主线程结束，JVM的其它线程仍然在进行，JVM没有结束
 
 ## Thread类-多线程的创建方式
 1. 创建线程方式一：继承Thread类
-    1. 定义一个类继承Thread类
-    2. 覆盖Thread类中的run方法
-    3. 直接创建Thread类的子类对象，创建线程
-    4. 调用`o.start()`方法开启线程并自动运行`run()`函数的内容
+	1. 定义一个类继承Thread类
+	2. 覆盖Thread类中的run方法
+	3. 直接创建Thread类的子类对象，创建线程
+	4. 调用`o.start()`方法开启线程并自动运行`run()`函数的内容
 2. 创建线程的目的是为了开启一条执行路径，去运行指定的代码，和其它代码实现同时运行
-    1. 运行的指定代码，就是这个执行路径的任务
-    2. JVM创建的主线程的任务都定义在主函数中
+	1. 运行的指定代码，就是这个执行路径的任务
+	2. JVM创建的主线程的任务都定义在主函数中
 3. 自定义的线程任务
-    1. Thread类中的run方法就是封装自定义线程运行任务的函数
-    2. 开启线程是为了运行指定代码，所以通过继承Thread类，并复写run方法，将运行的代码定义在run方法中即可
+	1. Thread类中的run方法就是封装自定义线程运行任务的函数
+	2. 开启线程是为了运行指定代码，所以通过继承Thread类，并复写run方法，将运行的代码定义在run方法中即可
 4.  多线程示例
 ```
-    class Demo extends Thread
-    {
-        private String name;
-        Demo(String name)
-        {
-            super(name);// 自定义线程名称
-        }
-        
-        // 最好采用这样的方式来书写 run()方法
-        public void run()
-        {
-            show();
-        }
-        
-        public void show()
-        {
-            for(int x = 0; x < 10; x++)
-            {
-                System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
-            }
-        }
-    }
-    
-    public class Untitled
-    {
-        public static void main(String[] args)
-        {
-            Demo d1 = new Demo("Jack");
-            Demo d2 = new Demo("小强");
-            
-            d1.start();// 线程1
-            d2.start();// 线程2
-        }
-    }
+	class Demo extends Thread
+	{
+		private String name;
+		Demo(String name)
+		{
+			super(name);// 自定义线程名称
+		}
+		
+		// 最好采用这样的方式来书写 run()方法
+		public void run()
+		{
+			show();
+		}
+		
+		public void show()
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
+			}
+		}
+	}
+	
+	public class Untitled
+	{
+		public static void main(String[] args)
+		{
+			Demo d1 = new Demo("Jack");
+			Demo d2 = new Demo("小强");
+			
+			d1.start();// 线程1
+			d2.start();// 线程2
+		}
+	}
 ```
 
 ## Thread类中的方法 & 线程名称
 1. 获取线程的名称: 可以通过Thread的`getName()`方法获取线程名称`Thread-编号(从0开始)`
-    1. 线程在完成`Thread t = new Thread()`之后就完成了线程的命名
-    2. `getName()`获取的是对象的名称
+	1. 线程在完成`Thread t = new Thread()`之后就完成了线程的命名
+	2. `getName()`获取的是对象的名称
 2. 获取运行时线程的名称：`Thread.currentThread().getName()`
 3. 主线程名称为`main`
 4. 继承Thread类后，自定义线程名称的方式：`super(string);`
@@ -321,176 +321,176 @@ public static <K,V> boolean compare(Pair<K,V> p1, Pair<K,V> p2)
 ## 线程的四种状态
 1. 被创建
 2. 运行：具备着执行资格，具备着执行权`o.start()`
-    1. CPU的执行资格：可以被CPU处理，在处理队列中排队
-    2. CPU的执行权：正在被CPU处理
-    
-    * 临时阻塞状态：具备执行资格，正在等待执行权(不具备)
+	1. CPU的执行资格：可以被CPU处理，在处理队列中排队
+	2. CPU的执行权：正在被CPU处理
+	
+	* 临时阻塞状态：具备执行资格，正在等待执行权(不具备)
 3. 冻结：
-    1. 线程运行以后调用`sleep(time)`进入冻结状态，此时保留线程存活但不运行，函数时间到自动苏醒
-    2. 线程调用`wait()`进入无限期冻结，通过调用`notify()`唤醒线程
-    3. 必须正在运行状态才能进入冻结状态
+	1. 线程运行以后调用`sleep(time)`进入冻结状态，此时保留线程存活但不运行，函数时间到自动苏醒
+	2. 线程调用`wait()`进入无限期冻结，通过调用`notify()`唤醒线程
+	3. 必须正在运行状态才能进入冻结状态
 4. 消亡：释放执行权的同时，释放执行资格
-    1. `run()`方法结束
-    2. 调用`stop()`方法
-    
+	1. `run()`方法结束
+	2. 调用`stop()`方法
+	
 ## Runnable接口-创建线程的第二种方式
 * 当某类有了自己的父类，因为不支持多继承，不能再继承Thread，只能通过此方式创建线程
 
 1. 通过接口的形式实现：扩展Demo类的功能，让其中的内容可以作为线程任务执行
 2. 步骤
-    1. 定义类实现Runnable接口
-    2. 覆盖接口中的run方法，将线程的任务代码封装到run方法中
-    3. 通过Thread类创建线程对象，并将Runnable接口的子类对象作为Thread类的构造函数的参数进行传递
-        * 传递对象的原因：在线程对象创建时就必须明确要运行的任务
-    4. 调用线程对象的start方法开启线程
+	1. 定义类实现Runnable接口
+	2. 覆盖接口中的run方法，将线程的任务代码封装到run方法中
+	3. 通过Thread类创建线程对象，并将Runnable接口的子类对象作为Thread类的构造函数的参数进行传递
+		* 传递对象的原因：在线程对象创建时就必须明确要运行的任务
+	4. 调用线程对象的start方法开启线程
 3. `new Thread(o)`运行实现接口的run方法,而不运行Thread原声run方法的原因:
 ```
 // Thread 内部结构
-    class Thread
-    {
-        private Runnable r;
-        Thread(){}
-        
-        Thread(Runnable r)
-        {
-            this.r = r;
-        }
-        public void run()
-        {
-            if (r != null)
-            r.run();
-        }
-        public void start()
-        {
-            run();
-        }   
-    }
-    
-    class ThreadImp1 implements Runnable
-    {
-        public void run()
-        {
-            System.out.println("Override run function running");
-        }
-    }
-    
-    ThreadImp1 i = new ThreadImp1();
-    Thread t = new Thread(i);// 此处将i传递给了r，进而调用了`r.run()`
-    t.start();
-```                     
+	class Thread
+	{
+		private Runnable r;
+		Thread(){}
+		
+		Thread(Runnable r)
+		{
+			this.r = r;
+		}
+		public void run()
+		{
+			if (r != null)
+			r.run();
+		}
+		public void start()
+		{
+			run();
+		}	
+	}
+	
+	class ThreadImp1 implements Runnable
+	{
+		public void run()
+		{
+			System.out.println("Override run function running");
+		}
+	}
+	
+	ThreadImp1 i = new ThreadImp1();
+	Thread t = new Thread(i);// 此处将i传递给了r，进而调用了`r.run()`
+	t.start();
+```						
 
 4. Runnable 示例
 ```
-    class Demo implements Runnable
-    {
-        private String name;
-    
-        public void run()
-        {
-            show();
-        }
-        
-        public void show()
-        {
-            for(int x = 0; x < 10; x++)
-            {
-                System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
-            }
-        }
-    }
-    
-    public class Untitled
-    {
-        public static void main(String[] args)
-        {
-            Demo d = new Demo();
-            
-            Thread t1 = new Thread(d);
-            Thread t2 = new Thread(d);
-                
-            t1.start();
-            t2.start();
-        }
-    }
+	class Demo implements Runnable
+	{
+		private String name;
+	
+		public void run()
+		{
+			show();
+		}
+		
+		public void show()
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				System.out.println(" x = " + x + " Name = " + Thread.currentThread().getName());
+			}
+		}
+	}
+	
+	public class Untitled
+	{
+		public static void main(String[] args)
+		{
+			Demo d = new Demo();
+			
+			Thread t1 = new Thread(d);
+			Thread t2 = new Thread(d);
+				
+			t1.start();
+			t2.start();
+		}
+	}
 ```
 
 ## Runnable接口 创建线程方式的优点
 1. 作用是将线程的任务进行了对象的封装
 ```
-    Runnable r = new Student();
-    
-    Thread t = new Thread(r);
-    
-    t.start();
+	Runnable r = new Student();
+	
+	Thread t = new Thread(r);
+	
+	t.start();
 ```
 
 2. 实现Runnable接口的好处：
-    1. 可将线程的任务从线程的子类中分离出来，进行了单独的封装，按照面相对象的思想将任务封装成对象
-    2. 避免了java单继承的局限性
-    
+	1. 可将线程的任务从线程的子类中分离出来，进行了单独的封装，按照面相对象的思想将任务封装成对象
+	2. 避免了java单继承的局限性
+	
 3. 创建线程的第二种方式较为常用
 
 ## 多线程-卖票示例
 ```
-    class Ticket implements Runnable// extends Thread
+	class Ticket implements Runnable// extends Thread
 {
-    private /*static*/ int num = 100;
-    
-    public void run()
-    {
-        sale();
-    }
-    
-    public void sale()
-    {
-        while(true)
-        {
-            if (num > 0)
-            {
-                System.out.println(Thread.currentThread().getName() + " " + num--);
-                
-                if (num == 0)
-                    return ;
-            }
-        }
-    }
+	private /*static*/ int num = 100;
+	
+	public void run()
+	{
+		sale();
+	}
+	
+	public void sale()
+	{
+		while(true)
+		{
+			if (num > 0)
+			{
+				System.out.println(Thread.currentThread().getName() + " " + num--);
+				
+				if (num == 0)
+					return ;
+			}
+		}
+	}
 }
 
 public class Untitled
 {
-    public static void main(String[] args)
-    {
-        
-        Ticket r = new Ticket();// 创建一个线程任务对象
-        
-        // 每个线程对象针对的都是同一个对象r，因此共享数据num
-        Thread t1 = new Thread(r);
-        Thread t2 = new Thread(r);
-        Thread t3 = new Thread(r);
-        Thread t4 = new Thread(r);
-        
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-    }
+	public static void main(String[] args)
+	{
+		
+		Ticket r = new Ticket();// 创建一个线程任务对象
+		
+		// 每个线程对象针对的都是同一个对象r，因此共享数据num
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+		Thread t3 = new Thread(r);
+		Thread t4 = new Thread(r);
+		
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+	}
 }
 ```
 
 * 多次启动一个线程是非法的
 
 ```
-    t1.start();
-    t1.start();// 此处报错
-    t1.start();
-    t1.start();
-```     
+	t1.start();
+	t1.start();// 此处报错
+	t1.start();
+	t1.start();
+```		
 
 # 线程安全问题的现象
 * 只能try-catch不能throws的情况
-    1. 将触发异常的函数不能throws异常，因为该函数所覆盖父类同名函数没有抛出该异常
-    2. 此时只能try-catch
-    
+	1. 将触发异常的函数不能throws异常，因为该函数所覆盖父类同名函数没有抛出该异常
+	2. 此时只能try-catch
+	
 ## 线程安全问题的原因
 1. 多个线程在操作共享的数据
 2. 操作共享数据的线程代码有多条
@@ -500,15 +500,15 @@ public class Untitled
 ## 同步代码块-解决多线程安全问题
 
 1. 解决思路：将多条操作共享数据的线程代码封装起来
-    1. 当有线程在运行这些代码时，其它线程不可以参与运算
-    2. 必须把当前这些代码都执行完毕后，其它线程才可以参与运算
-    
+	1. 当有线程在运行这些代码时，其它线程不可以参与运算
+	2. 必须把当前这些代码都执行完毕后，其它线程才可以参与运算
+	
 2. 同步代码块格式：
 ```
-    synchronized(object)
-    {
-        // 同步内容
-    }
+	synchronized(object)
+	{
+		// 同步内容
+	}
 ```
 
 ## 同步代码块的好处和弊端
@@ -523,10 +523,73 @@ public class Untitled
 ## 同步函数
 1. 需求
   1. 两个储户
-  2，每个都到银行存钱，每次存100
+  2. 每个都到银行存钱，每次存100
   3. 共存3次
 2. 寻找线程隐患的思路：在线程共同运行的代码段中，是否有共享数据
 3. `public synchronized void function()`同步函数可以同步函数体的内容
   * 不用再定义`Object obj = new Object();`
 4. 注意：同步函数的内容应该只包括需要同步的部分
 
+## 同步函数的锁
+1. 同步函数的锁是`this`
+2. 同步函数的锁是`调用该同步函数的对象`
+3. 同步函数和同步代码块的区别：
+	1. 同步函数的锁是固定的`this`
+	2. 同步代码块的锁是`任意的对象`
+4. 开发时：==建议使用同步代码块==，同步函数是同步代码块的简写形式
+5. 静态同步代码块的锁`static synchronized void func()`
+	1. 锁为`this.getClass()`
+	2. `obj.getClass()`的意义为：求对象obj所属的自解码文件对象
+	3. 另一种获取自解码文件对象的方式`className.class`
+	3. `自解码文件对象`在类进行加载时就已经建立
+	
+##  单例设计中的多线程隐患
+```
+	// 懒汉式
+	
+	class Single
+	{
+		private static Single s = null;
+		private Single(){}
+		
+		public static synchronized Single getInstance()
+		{
+			if(s == null)	// 多条语句，容易出错
+				s = new Single();
+				
+			return s;
+		}
+	}
+```
+
+1. 由于需要同步的部分存在多条语句，因此容易触发多线程时的错误
+2. 为避免这个错误，采用讲错误处的多条语句同步`synchronized`的形式
+3. 不建议用同步函数是因为：需要重复判断锁，降低效率
+4. 采用如下的方式改写懒汉式，解决问题：
+
+```
+	class Single
+	{
+		private static Single s = null;
+		private Single(){}
+		
+		public static Single getInstance()
+		{
+			//下条保证后续线程不需要判断锁，而不会出现重复创建对象的错误
+			if(s == null)			
+			{
+				synchronized(Single.class)
+				{
+					if(s == null)
+						s = new Single();
+						
+					return s;
+				}
+			}
+		}
+	}
+
+```
+
+5. `synchronized(Single.class)`不用`this.getClass()`
+6. getClass()方法是非静态，不能由静态方法调用
